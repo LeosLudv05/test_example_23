@@ -1,1 +1,1 @@
-# test_example_23
+# PRG ukázka půlsemestrálního testu
