@@ -1,4 +1,6 @@
 import math
+from time import process_time
+
 PI = math.pi
 SHAPE_KRUH = 'kruh'
 SHAPE_OBDELNIK = 'obdelnik'
@@ -72,17 +74,42 @@ def check_if_can_get_through_hole(rozmery, obrazce, prumer_diry):
 def count_area_weighted_letters(obrazce, obsahy, list_vysledku, hledane_pismeno):
     """
     Picovina pocitajici pocet pismen nebo nejaky takovy hovna nevim nejsu vedec
-    :param obrazce:
-    :param obsahy:
-    :param list_vysledku:
-    :param hledane_pismeno:
-    :return:
+    :param obrazce: (list) obsahuje nazvy jednotlivych tvaru
+    :param obsahy:  (list) obsahuje obsahy jednotlivych tvaru
+    :param list_vysledku:   (list) bool hodnoty jestli projdou dirou
+    :param hledane_pismeno: (str) zadane pismeno, ktere budem hledat a pocitat s nim
+    :return: (float) sumy hodnoty vsech tvaru, ktere prosly
     """
 
-def main(...):
-    ...
+    suma = 0.0
+    for nazev, obsah, vysled in zip(obrazce, obsahy, list_vysledku):
+        if vysled:
+            pocet_pismen = nazev.lower().count(hledane_pismeno.lower())
+            suma += obsah * pocet_pismen
 
+    return suma
 
+def main(rozmery, prumer_diry, hledane_pismeno, vratit_nazvy = False):
+    """
+    Main funkce ktera vypisuje vsechny hovadinky z predchozich ukolu
+    :param rozmery: (list) rozmery z prvniho ukolu
+    :param prumer_diry: (int) ciselna hodnota prumeru diry kterou prochazi obrazce
+    :param hledane_pismeno: (str) hledane pismeno v nazvech tvaru
+    :param vratit_nazvy: (bool) ma ci nema vyhodit i seznam jednotlivych tvaru - default False
+    :return: prosle_tvary (float); nazvy geometrickych tvaru pokud je 4. parametr True (list)
+    """
+
+    #Ukol 1
+    obrazce, obsahy = get_shapes_and_areas(rozmery)
+    #Ukol 2
+    list_vysledku = check_if_can_get_through_hole(rozmery, obrazce, prumer_diry)
+    #Ukol 3
+    celkova_hodnota = count_area_weighted_letters(obrazce, obsahy, list_vysledku, hledane_pismeno)
+    #Vystup
+    if vratit_nazvy is True:
+        return celkova_hodnota, obrazce
+    else:
+        return celkova_hodnota
 
 if __name__ == '__main__':
     shapes_parameters = [(6,), (3, 5), (5, 3), (3,), (3, 1), (3, 4, 5), (5, 12, 13)]
